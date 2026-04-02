@@ -1,0 +1,126 @@
+Equation,Reference,BinaryIndex,Variables,Group,SourceConstants,Version_Name,Formula
+Wave Celerity (C),https://www.coastalwiki.org/wiki/Shallow-water_wave_theory#:~:text=c%3D%CF%89/k%3D(g/%CF%89)tanh(kh)%2C(3.12),1,Wavelength (L); Wave Period (T),Linear Theory,CEM II-1-9,CEM (Linear),L / T
+Wave Celerity (C),https://www.coastalwiki.org/wiki/Shallow-water_wave_theory#:~:text=c%3D%CF%89/k%3D(g/%CF%89)tanh(kh)%2C(3.12),1,Water Depth (d),Linear Theory,CEM II-1-9,Coastal Wiki (Shallow),sqrt(9.81 * d)
+Wave Celerity (C),https://www.coastalwiki.org/wiki/Shallow-water_wave_theory#:~:text=c%3D%CF%89/k%3D(g/%CF%89)tanh(kh)%2C(3.12),1,Water Depth (d); Significant Wave Height (Hs),Linear Theory,CEM II-1-9,Coastal Wiki (Nonlinear),sqrt(9.81 * d) * sqrt(1 + 0.45 * (Hs / d))
+Wavelength (L),,,Wave Period (T),Linear Theory,CEM II-1-10,CEM (Deep Approximation),1.56 * T^2
+Wavelength (L),,,Wave Period (T); Water Depth (d); Wavelength (L),Linear Theory,CEM II-1-10,Linear (Iterative),(9.81 * T^2 / (2 * pi)) * tanh(2 * pi * d / L)
+Deep Water Wavelength (L0),,,Wave Period (T),Deep Water; Linear Theory,CEM II-1-15,CEM,1.56 * T^2
+Shallow Water Wavelength (Ls),,,Wave Period (T); Water Depth (d),Shallow Water; Linear Theory,CEM II-1-18,CEM,T * sqrt(9.81 * d)
+Linear Dispersion Relation,"https://www.coastalwiki.org/wiki/Shallow-water_wave_theory#:~:text=with-,%CF%89,gktanh(kh).(3.11),-The%20wave%20celerity",0,Wavelength (L); Wave Period (T); Water Depth (d),Linear Theory,CEM II-1-8,Standard,L * T * d
+Horizontal Particle Velocity (u),"https://www.coastalwiki.org/wiki/Shallow-water_wave_theory#:~:text=3.15a)-,u%3D,kx%E2%88%92%CF%89t)%2C(3.15b),-a",0,Wave Height (H); Wave Angular Frequency (omega); Wave Number (k); Water Depth (d); Particle Depth (z),Linear Theory,CEM II-1-22,Standard,(H/2) * omega * cosh(k * (d + z)) / sinh(k * d)
+Vertical Particle Velocity (w),"https://www.coastalwiki.org/wiki/Shallow-water_wave_theory#:~:text=3.15d)-,w%3D,kx%E2%88%92%CF%89t)%2C(3.15e),-a",0,Wave Height (H); Wave Angular Frequency (omega); Wave Number (k); Water Depth (d); Particle Depth (z),Linear Theory,CEM II-1-23,Standard,(H/2) * omega * sinh(k * (d + z)) / sinh(k * d)
+Horizontal Particle Acceleration (ax),"https://www.coastalwiki.org/wiki/Shallow-water_wave_theory#:~:text=3.15b)-,a,kx%E2%88%92%CF%89t)%2C(3.15c),-%CE%B6%3D",0,Wave Height (H); Wave Angular Frequency (omega); Wave Number (k); Water depth (d); Particle Depth (z),Linear Theory,CEM II-1-24,Standard,H * omega * k * d * z
+Vertical Particle Acceleration (az),"https://www.coastalwiki.org/wiki/Shallow-water_wave_theory#:~:text=3.15e)-,a,kx%E2%88%92%CF%89t).(3.15f),-All%20the%20equations",0,Wave Height (H); Wave Angular Frequency (omega); Wave Number (k); Water depth (d); Particle Depth (z),Linear Theory,CEM II-1-25,Standard,H * omega * k * d * z
+Horizontal Particle Displacement (xi),"https://www.coastalwiki.org/wiki/Shallow-water_wave_theory#:~:text=%CE%BE%3D%E2%88%92,3.15a)",0,Wave Height (H); Wave Angular Frequency (omega); Wave Number (k); Water depth (d); Particle Depth (z),Linear Theory,CEM II-1-29,Standard,H * omega * k * d * z
+Vertical Particle Displacement (zeta),"https://www.coastalwiki.org/wiki/Shallow-water_wave_theory#:~:text=%CE%B6%3D,3.15d)",0,Wave Height (H); Wave Angular Frequency (omega); Wave Number (k); Water depth (d); Particle Depth (z),Linear Theory,CEM II-1-30,Standard,H * omega * k * d * z
+Wave Pressure (p),"https://www.coastalwiki.org/wiki/Shallow-water_wave_theory#:~:text=p%3D%E2%88%92,(3.16)",0,Wave Height (H); Wave Angular Frequency (omega); Wave Number (k); Water depth (d); Particle Depth (z),Linear Theory,CEM II-1-39,Linear (Airy),rho * g * eta * (cosh(k*(d+z)) / cosh(k*d)) - rho * g * z
+Sinusoidal Free Surface (eta),https://www.coastalwiki.org/wiki/Shallow-water_wave_theory#:~:text=%CE%B7%3D,0,Wave Height (H); Wave Number (k); Wave Angular Frequency (omega),Linear Theory,CEM II-1-19,Standard,H * k * omega
+Wave Energy (E) ,"https://www.coastalwiki.org/wiki/Shallow-water_wave_theory#:~:text=E%3D%CF%81,(3.21)",0,Wave Height (H) ,Linear Theory,CEM II-1-58,CEM (Linear),0.125 * rho * g * H^2
+Wave Energy (E) ,"https://www.coastalwiki.org/wiki/Shallow-water_wave_theory#:~:text=E%3D%CF%81,(3.21)",0,Wave Height (H) ,Linear Theory,CEM II-1-58,Coastal Wiki (Random),0.0625 * rho * g * Hs^2
+Wave Power (P),"https://www.coastalwiki.org/wiki/Shallow-water_wave_theory#:~:text=an%20Airy%20wave)-,P%3D,%2C(3.22),-where",0,Wave Energy Density (E); Wave Group Celerity (Cg),Linear Theory,CEM II-1-60,CEM,E * Cg
+Wave Number (k),https://www.coastalwiki.org/wiki/Shallow-water_wave_theory,1,Wavelength (L),Linear Theory,,Standard,(2 * pi) / L
+Wave Angular Frequency (omega),https://www.coastalwiki.org/wiki/Shallow-water_wave_theory,1,Wave Period (T),Linear Theory,,Standard,(2 * pi) / T
+Group Velocity (Cg),"https://www.coastalwiki.org/wiki/Shallow-water_wave_theory#:~:text=celerity%2C%20given%20by-,c,.,-In%20deep%20water",0,Wave Celerity (C); Water Depth (d); Wave Number (k),Linear Theory,CEM II-1-49,CEM (Linear),0.5 * C * (1 + (2 * k * d) / sinh(2 * k * d))
+Wave Shoaling Coefficient (Ks),"https://www.coastalwiki.org/wiki/Shallow-water_wave_theory#:~:text=celerity%2C%20Equation%20(3.23)%2C-,K,.(4.6),-The%20variation%20of",0,Group Velocity (Cg); Group Velocity (Deep Water),Wave Transformation; Shallow Water,CEM II-3-10,Standard,Group * Group
+Wave Refraction Coefficient (Kr),"https://www.coastalwiki.org/wiki/Shallow-water_wave_theory#:~:text=.%20Hence-,sin%CE%B1,%3Dtanh(kh).(4.2),-Figure%207.%20Variations",0,Wave Angle (alpha); Wave Angle (Deep Water),Wave Transformation; Shallow Water,CEM II-3-14,Standard,alpha * Deep Water
+Surf Similarity Parameter (xi0),https://www.coastalwiki.org/wiki/Surf_similarity_parameter,1,Beach Slope (tan_alpha); Deep Water Wave Height (H0); Deep Water Wavelength (L0),Shallow Water; Linear Theory; Wave Transformation,CEM II-4-1,Battjes,tan_alpha / sqrt(H0 / L0)
+Breaking Index (gamma),https://www.coastalwiki.org/wiki/Breaker_index,0,Breaking Wave Height (Hb); Breaking Water Depth (db),Shallow Water; Wave Transformation,CEM II-4-3,CEM,Hb / db
+Breaking Index (gamma),https://www.coastalwiki.org/wiki/Breaker_index,0,Breaking Wave Height (Hb); Breaking Water Depth (db),Shallow Water; Wave Transformation,CEM II-4-3,Weggel,b / (1 + a * (d/L0))
+Breaking Wave Height (Hb),"https://www.coastalwiki.org/wiki/Breaker_index#:~:text=%CE%B3,.(1)",1,Deep Water Wavelength (L0); Water Depth (d); Beach Slope (tan_alpha),Shallow Water; Wave Transformation,CEM II-4-12,CEM (Goda),0.17 * L0 * (1 - exp(-1.5 * pi * d / L0 * (1 + 15 * tan_alpha^1.33)))
+Beach Runup - Hunt (R),"https://www.coastalwiki.org/wiki/Wave_run-up#:~:text=R%E2%88%BC,(1)",0,Deep Water Wave Height (H0); Surf Similarity Parameter (xi0),Beach Hydrodynamics,CEM II-4-26,Standard,Deep * Surf
+Wave Diffraction (Goda et al) (K'e),,0,"Diffraction Coefficient (K'); Zero Moment (M0); Limits of Spectral Wave Directions (theta-range); Spectral Energy Density (S,f,theta)",Wave Transformation,CEM II-7-1,Standard,Diffraction * Zero * Limits * Spectral
+Wave Transmission - Seelig ( ),,0,Structure Crest Width (B); Structure Height (h),Wave Transformation,CEM II-7-4,Standard,B * h
+Reflection Coefficient (Kr_refl),,0,Surf Similarity Parameter (xi0); Structure Geometry Coefficients,Wave Transformation,CEM II-1-105,Standard,Surf * Structure
+Runup - Battjes (R),,0,Wave Height (H); Surf Similarity Parameter (xi0); Structure Geometry Coefficients,Structure Response; Impermeable Slope,CEM VI-5-3,Standard,H * xi0
+Runup 2% - de Waal and van der Meer (R2%_structure),,1,Wave Height (H); Surf Similarity Parameter (xi0); Structure Geometry Coefficients,Structure Response; Impermeable Slope,CEM VI-5-7,Standard,H * xi0
+Runup 2% - Stockdon (R2%_beach),"https://www.coastalwiki.org/wiki/Wave_run-up#:~:text=a%20large%20dataset%3A-,R,%2C%CE%BE%3C0.3%2C(4),-where",0,Deep Water Wave Height (H0); Deep Water Wavelength (L0); Beach Slope (tan_alpha),Beach Response,,Stockdon (2006),1.1 * (0.35 * tan_alpha * sqrt(H0 * L0) + 0.5 * sqrt(H0 * L0 * (0.563 * tan_alpha^2 + 0.004)))
+Overtopping - vdM and Janssen (q),"https://www.coastalwiki.org/wiki/Wave_overtopping#:~:text=manual%5B1%5D-,q,)%2C(1),-for%20perpendicular%20wave",1,Wave Height (Hs); Freeboard (Rc); Friction (gamma_f); Berm Factor (gamma_b),Structure Response; Impermeable Slope,CEM VI-5-24,vdM & Janssen (1995),sqrt(9.81 * Hs^3) * 0.06 * exp(-4.7 * Rc / (Hs * gamma_f * gamma_b))
+Overtopping - Owens (q),"https://www.coastalwiki.org/wiki/Wave_overtopping#:~:text=manual%5B1%5D-,q,)%2C(1),-for%20perpendicular%20wave",0,Wave Height (Hs); Freeboard (Rc); Structure Geometry Coefficients; Surf Similarity Parameter (xi0); Wave Period (T),Structure Response; Impermeable Slope,CEM VI-5-22,Standard,Hs * Rc * xi0 * T
+Overtopping - Bradbury and Allsop (q),"https://www.coastalwiki.org/wiki/Wave_overtopping#:~:text=manual%5B1%5D-,q,)%2C(1),-for%20perpendicular%20wave",0,Wave Height (Hs); Freeboard (Rc); Structure Geometry Coefficients; Wave Period (T),Structure Response; Armored Slope,CEM VI-5-23,Standard,Hs * Rc * T
+Overtopping - Pedersen (q),"https://www.coastalwiki.org/wiki/Wave_overtopping#:~:text=manual%5B1%5D-,q,)%2C(1),-for%20perpendicular%20wave",0,Wave Height (Hs); Freeboard (Rc); Wavelength (L); Wave Period (T); Structure Slope (cot_alpha); Structure Geometry Coefficients,Structure Response; Armored Slope,CEM VI-5-27,Standard,Hs * Rc * L * T * cot_alpha
+Overtopping - Franco and Franco (q),"https://www.coastalwiki.org/wiki/Wave_overtopping#:~:text=manual%5B1%5D-,q,)%2C(1),-for%20perpendicular%20wave",0,Wave Height (Hs); Freeboard (Rc); Structure Geometry Coefficients,Structure Response; Vertical ,CEM VI-5-28,Standard,Hs * Rc
+Overtopping Volume (V),,1,Wave Period (T); Overtopping (q); Probability of Overtopping (Pov),Structure Response,CEM VI-5-31,Standard,T * q * Pov
+Probability of Overtopping (Pov),,1,Number of Overtopping Waves (Now); Number of Incoming Waves (Nw),Structure Response,,Standard,Number * Number
+Number of Overtopping Waves (Now),,1,Freeboard (Rc); Wave Height (Hs); Structure Geometry Coefficients,Structure Response,CEM VI-5-33,Standard,Rc * Hs
+Wave Transmission Coefficient (Ct),"https://www.coastalwiki.org/wiki/Wave_set-up_and_wave_transmission_by_low-crested_breakwaters#:~:text=%2C-,K,%CE%BE)%5D%2C(1),-where",0,Wave Height (Hs); Nominal Stone Diameter (Dn50); Freeboard (Rc); Structure Crest Width (B); Deepwater Wave Steepness (sop),Structure Response; Armored Slope; Submerged,CEM VI-5-54,Standard,Hs * Dn50 * Rc * B * sop
+Wave Transmission Coefficient - Goda (Ct),,0,Wave Height (Hs); Freeboard (Rc); Structure Height (h); Structure Geometry Coefficients ,Structure Response; Vertical ,CEM VI-5-55,Standard,Hs * Rc * h
+Stability Parameter (Ns),"https://www.coastalwiki.org/wiki/Stability_of_rubble_mound_breakwaters_and_shore_revetments#:~:text=N%3D,%2C(1)",1,Significant Wave Height (Hs); Nominal Stone Diameter (Dn50); Relative Density (S),Structure Response; Armored Slope,CEM VI-5-58,CEM,Hs / (Dn50 * (S - 1))
+Nominal Stone Diameter - Hudson (Dn50),"https://www.coastalwiki.org/wiki/Stability_of_rubble_mound_breakwaters_and_shore_revetments#:~:text=and%201/30).-,Several,-empirical%20formulas%20have",1,Wave Height (Hs); Stability Coefficient (Kd); Structure Slope (cot_alpha); Stone Density (rho_s),Structure Response; Armored Slope,CEM VI-5-67,CEM,(W / (rho_s * g))^(1/3)
+Pressure at Water Level (p1),,1,Wave Height (H); Wave Angle (beta); Water Density (rho); Wavelength (L); Water Depth (d),Structure Response; Vertical ,CEM VI-5-50,Goda (1974),0.5 * (1 + cos(beta)) * (alpha1 + alpha2 * cos(beta)^2) * rho * g * H
+Pressure at Structure Crest (p2),,1,Pressure At Water Level (p1); Freeboard (Rc),Structure Response; Vertical ,CEM VI-5-51,Standard,Pressure * Freeboard
+Pressure at Toe (p3),,1,Pressure At Water Level (p1); Water Depth (d); Wavelength (L),Structure Response; Vertical ,CEM VI-5-52,Standard,p1 * d * L
+Uplift Pressure (pu),,1,Wave Height (H); Wave Angle (beta); Water Density (rho); Wavelength (L); Water Depth (d),Structure Response; Vertical ,CEM VI-5-53,Standard,H * beta * rho * L * d
+Radiation Stress Sxx,,0,Wave Energy Density (E); Group Velocity Factor (n),Beach Hydrodynamics; Wave Transformation,CEM II-3-46,Standard,E * n
+Radiation Stress Syy,,0,Wave Energy Density (E); Group Velocity Factor (n),Beach Hydrodynamics; Wave Transformation,CEM II-3-47,Standard,E * n
+Radiation Stress Sxy,,0,Wave Energy Density (E); Group Velocity Factor (n); Wave Angle (alpha),Beach Hydrodynamics; Wave Transformation,CEM II-3-48,Standard,E * n * alpha
+Wave Setup (eta_max),https://www.coastalwiki.org/wiki/Wave_setup,0,Breaking Wave Height (Hb); Wave Period (T),Beach Hydrodynamics; Shallow Water,CEM II-4-34,CEM,0.19 * (1 - 2.82 * sqrt(Hb / (9.81 * T^2))) * Hb
+Wave Runup R2 (Mase),https://www.coastalwiki.org/wiki/Wave_run-up,0,Deep Water Wave Height (H0); Surf Similarity Parameter (xi0),Beach; Structure Response,CEM VI-5-12,Mase (1989),1.86 * H0 * xi0^0.71
+Root Mean Square Wave Height (Hrms),https://www.coastalwiki.org/wiki/Statistical_description_of_wave_parameters,0,Wave Height (H),Data Analysis; Data Analysis,CEM II-1-114,Rayleigh,Hs / 1.414
+Significant Wave Height (Hs),https://www.coastalwiki.org/wiki/Statistical_description_of_wave_parameters,0,Root Mean Square Wave Height (Hrms),Data Analysis; Deep Water,CEM II-1-120,Spectral (m0),4 * sqrt(m0)
+Significant Wave Height (Hs),https://www.coastalwiki.org/wiki/Statistical_description_of_wave_parameters,0,Root Mean Square Wave Height (Hrms),Data Analysis; Deep Water,CEM II-1-120,Rayleigh,Hrms * 1.414
+H1/10 (Highest Tenth),https://www.coastalwiki.org/wiki/Statistical_description_of_wave_parameters,0,Root Mean Square Wave Height (Hrms),Data Analysis; Deep Water,CEM II-1-121,Standard,Root
+Rayleigh Distribution (H),https://www.coastalwiki.org/wiki/Statistical_description_of_wave_parameters,0,Wave Height (H); Root Mean Square Wave Height (Hrms),Data Analysis; Deep Water,CEM II-1-114,Standard,H * Hrms
+Weibull Distribution (H),https://www.coastalwiki.org/wiki/Statistical_description_of_wave_parameters,1,Wave Height (H); Scale Parameter; Shape Parameter,Data Analysis,CEM II-1-130,Standard,Wave * Scale * Shape
+Spectral Moment m0,https://www.coastalwiki.org/wiki/Statistical_description_of_wave_parameters,0,Spectral Density (S),Data Analysis; Wave Generation,CEM II-1-135,Standard,Spectral
+Spectral Moment m2,https://www.coastalwiki.org/wiki/Statistical_description_of_wave_parameters,0,Spectral Density (S); Frequency (f),Data Analysis; Wave Generation,CEM II-1-135,Standard,Spectral * Frequency
+Spectral Peak Frequency (fp),,0,Spectral Moment m0; Spectral Moment m2,Data Analysis; Wave Generation,CEM II-1-138,Standard,Spectral * Spectral
+Spectral Bandwidth (epsilon),,0,Spectral Moment m0; Spectral Moment m2; Spectral Moment m4,Data Analysis; Wave Generation,CEM II-1-139,Standard,Spectral * Spectral * Spectral
+JONSWAP Spectrum,https://www.coastalwiki.org/wiki/Statistical_description_of_wave_parameters,0,Frequency (f); Peak Frequency (fp); Phillips Constant (alpha); Gamma,Wave Generation; Data Analysis,CEM II-2-20,Standard,Frequency * Peak * Phillips * Gamma
+Wind Stress Coefficient (Cd),,1,Wind Speed (U10),Wave Generation; Data Analysis,CEM II-2-1,Standard,Wind
+Adjusted Wind Speed (Ua),,1,Wind Speed (U10),Wave Generation; Deep Water,CEM II-2-4,Standard,Wind
+Fetch-Limited Height (Deep),https://www.coastalwiki.org/wiki/Wave_generation,1,Adjusted Wind Speed (Ua); Fetch (F),Wave Generation; Deep Water,CEM II-2-12,Standard,Adjusted * Fetch
+Fetch-Limited Period (Deep),https://www.coastalwiki.org/wiki/Wave_generation,1,Adjusted Wind Speed (Ua); Fetch (F),Wave Generation; Deep Water,CEM II-2-13,Standard,Adjusted * Fetch
+Duration-Limited Height,,1,Adjusted Wind Speed (Ua); Duration (t),Wave Generation; Deep Water,CEM II-2-14,Standard,Adjusted * Duration
+Shallow Water Fetch Height,,1,Adjusted Wind Speed (Ua); Fetch (F); Water Depth (h),Wave Generation; Shallow Water,CEM II-2-27,Standard,(0.283 * Ua^2 / 9.81) * tanh(0.53 * (9.81 * h / Ua^2)^0.75) * tanh(0.0125 * (9.81 * F / Ua^2)^0.42 / tanh(0.53 * (9.81 * h / Ua^2)^0.75))
+Shallow Water Fetch Period,,1,Adjusted Wind Speed (Ua); Fetch (F); Water Depth (h),Wave Generation; Shallow Water,CEM II-2-28,Standard,Adjusted * Fetch * Water
+Hudson Armor Weight (W),https://www.coastalwiki.org/wiki/Stability_of_rubble_mound_breakwaters,1,Wave Height (H); Stability Coefficient (Kd); Relative Density (S); Structure Slope (cot_alpha),Armored Slope; Structure Response,CEM VI-5-22,CEM,(1025 * 9.81 * H^3) / (Kd * (S - 1)^3 * cot_alpha)
+Armor Layer Thickness (r),,0,Layer Coefficient (nk); Armor Weight (W); Armor Density (wr),Armored Slope; Structure Response,CEM VI-5-1,Standard,Layer * Armor * Armor
+Filter Layer Weight (Wf),,0,Armor Weight (W),Armored Slope; Structure Response,CEM VI-5-4,Standard,Armor
+Toe Stability (Dn50_toe),,1,Wave Height (H); Water Depth (h); Toe Depth (ht),Armored Slope; Structure Response,CEM VI-5-32,Standard,H * h * ht
+Goda Total Vertical Force (Fv),,1,Goda Pressure p1; Goda Pressure p2; Goda Pressure p3; Water Depth (h); Freeboard (Rc),Structure Response; Vertical ,CEM VI-5-54,Standard,Goda * Goda * Goda * Water * Freeboard
+Goda Overturning Moment (M),,1,Goda Total Vertical Force (Fv); Goda Pressure p1; Goda Pressure p2; Goda Pressure p3,Structure Response; Vertical ,CEM VI-5-55,Standard,Goda * Goda * Goda * Goda
+Sainflou Pressure (p_max),https://www.coastalwiki.org/wiki/Wave_pressure_on_vertical_walls,0,Wave Height (H); Water Depth (h); Wavelength (L),Structure Response; Vertical ,CEM VI-5-44,Standard,H * h * L
+Morison Drag Force (Fd),https://www.coastalwiki.org/wiki/Wave_forces,0,Drag Coefficient (Cd); Water Density (rho); Diameter (D); Velocity (u),Impermeable Slope; Structure Response,CEM VI-5-63,Standard,Drag * Water * Diameter * Velocity
+Morison Inertia Force (Fi),https://www.coastalwiki.org/wiki/Wave_forces,0,Inertia Coefficient (Cm); Water Density (rho); Diameter (D); Acceleration (du_dt),Impermeable Slope; Structure Response,CEM VI-5-64,Standard,Inertia * Water * Diameter * Acceleration
+Total Morison Force (Ft),https://www.coastalwiki.org/wiki/Wave_forces,0,Morison Drag Force (Fd); Morison Inertia Force (Fi),Impermeable Slope; Structure Response,CEM VI-5-65,Standard,Morison * Morison
+Morison Force Moment (Mt),,0,Total Morison Force (Ft); Lever Arm (z),Impermeable Slope; Structure Response,CEM VI-5-66,Standard,Total * Lever
+Pile Lift Force (Fl),,0,Lift Coefficient (Cl); Water Density (rho); Diameter (D); Velocity (u),Impermeable Slope; Structure Response,CEM VI-5-75,Standard,Lift * Water * Diameter * Velocity
+CERC Longshore Rate (Il),https://www.coastalwiki.org/wiki/Littoral_drift_and_shoreline_modelling,0,Transport Coefficient (K); Longshore Energy Flux (Pls),Beach Response; Beach Hydrodynamics,CEM IV-3-2,Standard,Transport * Longshore
+Longshore Energy Flux (Pls),,0,Breaking Wave Height (Hb); Wave Angle (alpha); Group Velocity (Cg),Beach Hydrodynamics; Shallow Water,CEM IV-3-3,Standard,Hb * alpha * Cg
+CERC Volume Transport (Ql),,0,CERC Longshore Rate (Il); Porosity (n); Density (rho),Beach Response; Beach Hydrodynamics,CEM IV-3-1,Standard,CERC * Porosity * Density
+Kamphuis Transport (Qs),https://www.coastalwiki.org/wiki/Littoral_drift_and_shoreline_modelling,0,Wave Height (H); Wave Period (T); Beach Slope (tan_alpha); Sediment Size (D50),Beach Response; Beach Hydrodynamics,CEM IV-3-4,Standard,H * T * tan_alpha * D50
+Equilibrium Beach Profile (h_eq),https://www.coastalwiki.org/wiki/Standard_Equilibrium_Beach_Profile,0,Profile Scale Parameter (A); Distance (x),Beach; Beach Response,CEM III-3-1,Standard,Profile * Distance
+Profile Scale Parameter (A),,0,Sediment Size (D50),Beach; Beach Response,CEM III-3-2,Standard,Sediment
+Depth of Closure (hc),https://www.coastalwiki.org/wiki/Coastal_Glossary,0,Significant Wave Height (Hs); Wave Period (T),Beach; Beach Response,CEM III-3-20,Standard,Hs * T
+Berm Height (B),,0,Significant Wave Height (Hs),Beach; Beach Response,CEM III-3-21,Standard,Significant
+Shoreline Change (dy/dt),,0,Longshore Volume (Ql); Distance (dx),Beach Response,CEM III-2-15,Standard,Longshore * Distance
+Stokes Wave Celerity (C2),https://www.coastalwiki.org/wiki/Shallow-water_wave_theory,0,Wave Number (k); Water Depth (h); Wave Height (H),Nonlinear Theory,CEM II-1-41,Standard,k * h * H
+Stokes Profile (eta),,0,Wave Number (k); Water Depth (h); Wave Height (H),Nonlinear Theory,CEM II-1-38,Standard,k * h * H
+Cnoidal Wave Period (T_cn),https://www.coastalwiki.org/wiki/Shallow-water_wave_theory,0,Water Depth (h); Wave Height (H); Elliptic Modulus (m),Nonlinear Theory,CEM II-1-61,Standard,h * H * m
+Cnoidal Wave Celerity (C_cn),,0,Water Depth (h); Wave Height (H); Elliptic Modulus (m),Nonlinear Theory,CEM II-1-62,Standard,h * H * m
+Solitary Wave Profile (eta_sol),https://www.coastalwiki.org/wiki/Shallow-water_wave_theory,0,Wave Height (H); Water Depth (h); Distance (x),Nonlinear Theory,CEM II-1-75,Standard,H * h * x
+Solitary Wave Velocity (u_sol),,0,Wave Height (H); Water Depth (h),Nonlinear Theory,CEM II-1-78,Standard,H * h
+Solitary Wave Acceleration (du_dt_sol),,0,Wave Height (H); Water Depth (h),Nonlinear Theory,CEM II-1-79,Standard,H * h
+Ursell Number (U),,0,Wave Height (H); Wavelength (L); Water Depth (h),Nonlinear Theory,CEM II-1-65,Standard,(L^2 * H) / d^3
+Keulegan-Carpenter Number (KC),,0,Velocity (u); Wave Period (T); Diameter (D),Impermeable Slope; Structure Response,CEM VI-5-68,Standard,u * T / D
+Reynolds Number (Re),,0,Velocity (u); Diameter (D); Viscosity (nu),Data Analysis,CEM VI-5-69,Standard,u * D / nu
+Shields Parameter (theta_s),,0,Shear Stress (tau); Sediment Size (D50); Density (rho),Beach Hydrodynamics,CEM III-1-15,Standard,Shear * Sediment * Density
+Critical Shields (theta_cr),,0,Sediment Size (D50),Beach Hydrodynamics,CEM III-1-16,Standard,Sediment
+Bed Shear Stress (tau_b),,0,Friction Factor (fw); Water Density (rho); Velocity (u),Beach Hydrodynamics,CEM II-1-98,Standard,Friction * Water * Velocity
+Friction Factor (fw),,0,Grain Roughness (ks); Orbital Excursion (A),Beach Hydrodynamics,CEM II-1-100,Standard,Grain * Orbital
+Orbital Excursion (A),,0,Velocity (u); Wave Period (T),Beach Hydrodynamics,CEM II-1-94,Standard,u * T
+Suspended Load (qs),,0,Concentration (c); Velocity (u); Sediment Size (D50),Beach Response,CEM IV-3-12,Standard,Concentration * Velocity * Sediment
+Bed Load (qb),,0,Shear Stress (tau); Critical Shields (theta_cr),Beach Response,CEM IV-3-11,Standard,Shear * Critical
+Longshore Current Velocity (v),,0,Beach Slope (tan_alpha); Wave Height (H); Wave Angle (alpha),Beach Hydrodynamics,CEM II-4-39,Standard,tan_alpha * H * alpha
+Bottom Slope (tan_alpha),,0,Water Depth (h); Distance (x),Beach; Beach Hydrodynamics,CEM II-4-1,Standard,Water * Distance
+Deep Water Wave Height (H0),,0,Wave Height (H); Wave Shoaling Coefficient (Ks); Wave Refraction Coefficient (Kr),Deep Water; Wave Transformation,CEM II-3-11,CEM,H / (Ks * Kr)
+Effective Fetch (Fe),,0,Fetch (F); Angle (phi),Wave Generation,CEM II-2-10,Standard,Fetch * Angle
+Wave Crest Elevation (eta_c),,0,Wave Height (H),Linear Theory,CEM II-1-14,Linear,0.5 * H
+Wave Crest Elevation (eta_c),,0,Wave Height (H); Wavelength (L); Water Depth (d),Linear Theory,CEM II-1-14,Stokes 2nd,0.5 * H + (pi * H^2 / (8 * L)) * (3 * cosh((2*pi/L)*d)^3 + 1) / sinh((2*pi/L)*d)^3
+Wave Trough Elevation (eta_t),,0,Wave Height (H),Linear Theory,CEM II-1-15,Linear,#NAME?
+Wave Trough Elevation (eta_t),,0,Wave Height (H); Wavelength (L); Water Depth (d),Linear Theory,CEM II-1-15,Stokes 2nd,#NAME?
+Bessel J0 Variable,,0,Wave Number (k); Distance (x),Nonlinear Theory,CEM II-1-107,Standard,k * x
+Modified Bessel I0 Variable,,0,Wave Number (k); Distance (x),Nonlinear Theory,CEM II-1-108,Standard,k * x
+Complete Elliptic Integral K(m),,1,Elliptic Modulus (m),Nonlinear Theory,CEM II-1-61a,Standard,Elliptic
+Complete Elliptic Integral E(m),,1,Elliptic Modulus (m),Nonlinear Theory,CEM II-1-61b,Standard,Elliptic
+Jacobi Elliptic Function cn,,1,Variable (u); Elliptic Modulus (m),Nonlinear Theory,CEM II-1-60,Standard,Variable * Elliptic
