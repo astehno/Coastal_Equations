@@ -170,7 +170,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         'background-color': '#fff',
                         'shape': 'round-rectangle',
                         'width': '160px',
-                        'height': '100px',
+                        'height': 'label',
                         'padding': '12px',
                         'text-valign': 'center',
                         'text-wrap': 'wrap',
@@ -232,7 +232,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     const pos = node.renderedPosition();
                     const popupHeight = popup.offsetHeight;
                     
-                    popup.style.left = (pos.x-40 ) + 'px'; // Move right past the node half-width (160/2)
+                    popup.style.center = (pos.x ) + 'px'; // Move right past the node half-width (160/2)
                     popup.style.top = (pos.y + 40 - popupHeight) + 'px'; // Move up past node half-height plus popup height
                 }, 500); // 2-second delay
             });
