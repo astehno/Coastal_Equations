@@ -170,7 +170,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         'background-color': '#fff',
                         'shape': 'round-rectangle',
                         'width': '160px',
-                        'height': 'auto',
+                        'height': 'label',
                         'padding': '12px',
                         'text-valign': 'center',
                         'text-wrap': 'wrap',
@@ -232,7 +232,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     const pos = node.renderedPosition();
                     const popupHeight = popup.offsetHeight;
                     
-                    popup.style.left = (pos.x ) + 'px'; // Move right past the node half-width (160/2)
+                    popup.style.left = (pos.x +40) + 'px'; // Move right past the node half-width (160/2)
                     popup.style.top = (pos.y + 40 - popupHeight) + 'px'; // Move up past node half-height plus popup height
                 }, 500); // 2-second delay
             });
@@ -254,8 +254,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 animate: true,
                 fit: true,
                 padding: 50,
-                nodeRepulsion: 8000, 
-                idealEdgeLength: 80,
+                nodeRepulsion: 10000, 
+                idealEdgeLength: 150,
                 //gravity: 0.5,
                 //nodeSeparation: 130, 
                 //numIter: 5000,
@@ -263,7 +263,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 //packComponents: true
                 gravity: 0.5,           // Increased to pull islands in
                 gravityRange: 4.0,      // Pulls disconnected components harder
-                nodeSeparation: 150,    // Ensures no overlap (0% overlap)
+                nodeSeparation: 300,    // Ensures no overlap (0% overlap)
                 tile: true,             // Tiles disconnected components
                 tilingPaddingVertical: 40,
                 tilingPaddingHorizontal: 40
