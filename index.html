@@ -229,11 +229,27 @@ document.addEventListener('DOMContentLoaded', () => {
                     popup.style.display = 'block';
                     
                     // Position lower-left of popup at upper-right of node
-                    const pos = node.renderedPosition();
-                    const popupHeight = popup.offsetHeight;
+                   // 1. Get the bounding box of the graph container to account for sidebar offset
+                    const cyContainer = document.getElementById('cy').getBoundingClientRect();
                     
-                   popup.style.left = (pos.x - (popup.offsetWidth / 2)) + 'px';// Move right past the node half-width (160/2)
-                    popup.style.top = (pos.y + 40 - popupHeight) + 'px'; // Move up past node half-height plus popup height
+                    // 2. Get the node's center position relative to the graph viewport
+                    const pos = node.renderedPosition();
+                    
+                    // 3. Calculate the absolute horizontal center on the page
+                    // (Node Center + Container Left Offset)
+                    const absoluteX = pos.x + cyContainer.left;
+                    
+                    // 4. Calculate the absolute vertical top of the node
+                    // (Node Center + Container Top Offset - Half of Node Height)
+                    const nodeHalfHeight = node.renderedOuterHeight() / 2;
+                    const absoluteY = pos.y + cyContainer.top - nodeHalfHeight;
+                    
+                    // 5. Apply centering logic to the popup
+                    // Set Left: Absolute Center minus half of the popup's own width
+                    popup.style.left = (absoluteX - (popup.offsetWidth / 2)) + 'px';
+                    
+                    // Set Top: Absolute Node Top minus popup height and a 10px buffer
+                    popup.style.top = (absoluteY - popup.offsetHeight - 10) + 'px';
                 }, 500); // 2-second delay
             });
             
