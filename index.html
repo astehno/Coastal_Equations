@@ -32,6 +32,22 @@
         .hidden-node { display: none !important; }
         
         #footer-info { margin-top: auto; padding-top: 20px; border-top: 1px solid #eee; font-size: 11px; color: #888; line-height: 1.5; }
+
+        #equation-popup {
+            position: absolute;
+            display: none;
+            background: #f4f4f4;
+            border: 1px solid #333;
+            padding: 10px;
+            border-radius: 4px;
+            z-index: 9999;
+            box-shadow: 3px 3px 10px rgba(0,0,0,0.2);
+            pointer-events: none; /* Allows hovering "through" it */
+            font-size: 12px;
+            max-width: 300px;
+        }
+        .popup-line { margin-bottom: 5px; }
+        .bold-variant { font-weight: bold; }
     </style>
 </head>
 <body>
@@ -58,6 +74,8 @@
     <div id="cy"></div>
 </div>
 
+    <div id="equation-popup"></div>
+    
 <script>
 const palette = ['#4E79A7','#F28E2B','#E15759','#76B7B2','#59A14F','#EDC948','#B07AA1','#FF9DA7','#9C755F','#BAB0AC'];
 
@@ -101,6 +119,38 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
 
+        // 3. Build Equation Nodes (Updated to aggregate rows)
+        const equationMap = new Map();
+        
+        data.forEach(row => {
+            if(!row.Equation) return;
+            const id = row.Equation.trim();
+            const primaryGroup = row.Group ? row.Group.split(';')[0].trim() : '';
+            
+            if (!equationMap.has(id)) {
+                equationMap.set(id, {
+                    id,
+                    label: id + (row.SourceConstants ? "\n" + row.SourceConstants : ""),
+                    bin: parseInt(row.BinaryIndex) || 0,
+                    groups: row.Group ? row.Group.split(';').map(g => g.trim()) : [],
+                    color: groups[primaryGroup] || '#ccc',
+                    ref: row.Reference,
+                    variants: [] // Store all versions here
+                });
+            }
+            
+            // Push the specific version data for the popup
+            equationMap.get(id).variants.push({
+                version: row.Version_Name || 'Standard',
+                formula: row.Formula || '',
+                isBold: parseInt(row.BinaryIndex) === 1
+            });
+        });
+        
+        equationMap.forEach(nodeData => {
+            elements.push({ data: nodeData });
+        });
+        
         // 3. Build Implicit Constant Nodes (Variables not defined as Equations)
         const vars = new Set();
         data.forEach(row => {
@@ -173,6 +223,42 @@ document.addEventListener('DOMContentLoaded', () => {
                 { selector: 'node.faded', style: { 'opacity': 1.0 } },
                 { selector: '.hidden-node', style: { 'display': 'none' } }
             ]
+                
+            let hoverTimer;
+            const popup = document.getElementById('equation-popup');
+            
+            cy.on('mouseover', 'node', (e) => {
+                const node = e.target;
+                if (node.hasClass('hidden-node')) return;
+            
+                hoverTimer = setTimeout(() => {
+                    const variants = node.data('variants') || [];
+                    if (variants.length === 0) return;
+            
+                    // Build HTML content - scalable for LaTeX tags later
+                    let content = '';
+                    variants.forEach(v => {
+                        const styleClass = v.isBold ? 'bold-variant' : '';
+                        content += `<div class="popup-line ${styleClass}">${v.version}: ${v.formula}</div>`;
+                    });
+            
+                    popup.innerHTML = content;
+                    popup.style.display = 'block';
+                    
+                    // Position at top-right of node
+                    const pos = node.renderedPosition();
+                    popup.style.left = (pos.x + 80) + 'px';
+                    popup.style.top = (pos.y - 40) + 'px';
+                }, 2000); // 2-second delay
+            });
+            
+            cy.on('mouseout', 'node', () => {
+                clearTimeout(hoverTimer);
+                popup.style.display = 'none';
+            });
+            
+            cy.on('pan zoom', () => { popup.style.display = 'none'; });
+            
         });
 
         // Optimization Layout (No forced direction)
@@ -180,16 +266,23 @@ document.addEventListener('DOMContentLoaded', () => {
             cy.layout({
                 name: 'fcose',
                 quality: 'proof',
+                randomize: false, // Prevents total reshuffle on update
                 animate: true,
                 fit: true,
                 padding: 50,
-                nodeRepulsion: 12000, 
-                idealEdgeLength: 100,
-                gravity: 0.3,
-                nodeSeparation: 130, 
-                numIter: 5000,
-                tile: true,
-                packComponents: true
+                nodeRepulsion: 8000, 
+                idealEdgeLength: 80,
+                //gravity: 0.5,
+                //nodeSeparation: 130, 
+                //numIter: 5000,
+               // tile: true,
+                //packComponents: true
+                gravity: 0.5,           // Increased to pull islands in
+                gravityRange: 4.0,      // Pulls disconnected components harder
+                nodeSeparation: 150,    // Ensures no overlap (0% overlap)
+                tile: true,             // Tiles disconnected components
+                tilingPaddingVertical: 40,
+                tilingPaddingHorizontal: 40
             }).run();
         }
 
@@ -203,17 +296,19 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         // Core Update Logic (Binary Fix & Garbage Collection)
-        function update() {
+        
+        // Core Update Logic (Replaces the old update function)
+        function update(isGrayOutToggle = false) {
             const active = Array.from(document.querySelectorAll('.tg:checked')).map(e => e.value);
             const shouldGray = document.getElementById('grayOutBinary').checked;
-
+        
             // 1. Filter Equations
             cy.nodes().not('[?isVar]').forEach(n => {
                 const show = n.data('groups').some(g => active.includes(g.trim()));
                 
                 if (show) {
                     n.removeClass('hidden-node');
-                    // Fix: Apply binary gray-out logic while visible
+                    // Apply binary gray-out logic while visible
                     if (shouldGray && n.data('bin') === 0) {
                         n.addClass('binary-grayed');
                     } else {
@@ -224,18 +319,22 @@ document.addEventListener('DOMContentLoaded', () => {
                     n.removeClass('binary-grayed');
                 }
             });
-
-            // 2. Filter Variables (Input trimming)
+        
+            // 2. Filter Variables
             cy.nodes('[?isVar]').forEach(v => {
                 const hasVisibleTarget = v.outgoers().nodes().some(eq => !eq.hasClass('hidden-node'));
                 v.toggleClass('hidden-node', !hasVisibleTarget);
             });
-
-            runLayout();
+        
+            // ONLY run layout if we are NOT just toggling the gray-out button
+            if (!isGrayOutToggle) {
+                runLayout();
+            }
         }
-
-        // Listeners
-        document.querySelectorAll('.tg, #grayOutBinary').forEach(el => el.addEventListener('change', update));
+        
+        // Updated Listeners
+        document.querySelectorAll('.tg').forEach(el => el.addEventListener('change', () => update(false)));
+        document.getElementById('grayOutBinary').addEventListener('change', () => update(true));
         
         // Tap: Highlight Path & Manage Z-Index
         cy.on('tap', 'node', e => {
