@@ -100,25 +100,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        // 2. Build Equation Nodes
-        data.forEach(row => {
-            if(!row.Equation) return;
-            const id = row.Equation.trim();
-            const primaryGroup = row.Group ? row.Group.split(';')[0].trim() : '';
-            const label = id + (row.SourceConstants ? "\n" + row.SourceConstants : "");
-            
-            elements.push({ 
-                data: { 
-                    id, label, 
-                    bin: parseInt(row.BinaryIndex) || 0, 
-                    groups: row.Group ? row.Group.split(';').map(g => g.trim()) : [], 
-                    color: groups[primaryGroup] || '#ccc', 
-                    isVar: false,
-                    ref: row.Reference 
-                } 
-            });
-        });
-
+      
         // 3. Build Equation Nodes (Updated to aggregate rows)
         const equationMap = new Map();
         
@@ -250,7 +232,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     const pos = node.renderedPosition();
                     popup.style.left = (pos.x + 80) + 'px';
                     popup.style.top = (pos.y - 40) + 'px';
-                }, 2000); // 2-second delay
+                }, 500); // 2-second delay
             });
             
             cy.on('mouseout', 'node', () => {
