@@ -170,7 +170,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         'background-color': '#fff',
                         'shape': 'round-rectangle',
                         'width': '160px',
-                        'height': 'label',
+                        'height': '100px',
                         'padding': '12px',
                         'text-valign': 'center',
                         'text-wrap': 'wrap',
@@ -232,7 +232,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     const pos = node.renderedPosition();
                     const popupHeight = popup.offsetHeight;
                     
-                    popup.style.left = (pos.x +40) + 'px'; // Move right past the node half-width (160/2)
+                    popup.style.left = (pos.x-40 ) + 'px'; // Move right past the node half-width (160/2)
                     popup.style.top = (pos.y + 40 - popupHeight) + 'px'; // Move up past node half-height plus popup height
                 }, 500); // 2-second delay
             });
@@ -253,7 +253,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 randomize: false, // Prevents total reshuffle on update
                 animate: true,
                 fit: true,
-                padding: 50,
+                padding: 100,
                 nodeRepulsion: 10000, 
                 idealEdgeLength: 150,
                 //gravity: 0.5,
@@ -262,7 +262,7 @@ document.addEventListener('DOMContentLoaded', () => {
                // tile: true,
                 //packComponents: true
                 gravity: 0.5,           // Increased to pull islands in
-                gravityRange: 4.0,      // Pulls disconnected components harder
+                gravityRange: 6.0,      // Pulls disconnected components harder
                 nodeSeparation: 300,    // Ensures no overlap (0% overlap)
                 tile: true,             // Tiles disconnected components
                 tilingPaddingVertical: 40,
