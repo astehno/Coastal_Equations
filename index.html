@@ -208,7 +208,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
                 
             let hoverTimer;
-            const popup = document.getElementById('equation-popup');
+           window.popup = document.getElementById('equation-popup');
             
             cy.on('mouseover', 'node', (e) => {
                 const node = e.target;
