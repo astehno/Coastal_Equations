@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Coastal Engineering: Integrated Logic Map</title>
+    <title>Coastal Equations Map</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.26.0/cytoscape.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/layout-base@2.0.1/layout-base.js"></script>
@@ -53,17 +53,17 @@
 <body>
 
 <div id="sidebar">
-    <h3>Equation Domains</h3>
+    <h3>Equation Groups</h3>
     <div id="group-filters"></div>
     
     <div id="footer-info">
         <label class="group-item" style="font-weight: 600;">
-            <input type="checkbox" id="grayOutBinary"> Gray Out Inactive (Bin 0)
+            <input type="checkbox" id="grayOutBinary"> Gray = not in StormSim
         </label>
         <p><b>Controls:</b><br>
         • Click to highlight calculation path.<br>
         • Double-click to open Coastal Wiki.<br>
-        • Space-optimized cloud clustering.</p>
+        • Hover to see equation - bolded if in StormSim.</p>
     </div>
 </div>
 
@@ -232,8 +232,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     const pos = node.renderedPosition();
                     const popupHeight = popup.offsetHeight;
                     
-                    popup.style.left = (pos.x + 80) + 'px'; // Move right past the node half-width (160/2)
-                    popup.style.top = (pos.y - 40 - popupHeight) + 'px'; // Move up past node half-height plus popup height
+                    popup.style.right = (pos.x + 80) + 'px'; // Move right past the node half-width (160/2)
+                    popup.style.top = (pos.y + 40 - popupHeight) + 'px'; // Move up past node half-height plus popup height
                 }, 500); // 2-second delay
             });
             
