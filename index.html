@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Coastal Engineering: Integrated Logic Map</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.26.0/cytoscape.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/layout-base@2.0.1/layout-base.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/cose-base@2.2.0/cose-base.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/cytoscape-fcose@2.2.0/cytoscape-fcose.js"></script>
+    <style>
+        body { font-family: 'Inter', 'Segoe UI', sans-serif; margin: 0; display: flex; height: 100vh; background: #fafafa; overflow: hidden; }
+        
+        /* Sidebar Navigation */
+        #sidebar { 
+            width: 280px; background: white; border-right: 1px solid #eee; 
+            padding: 20px; display: flex; flex-direction: column; z-index: 100; 
+            box-shadow: 2px 0 10px rgba(0,0,0,0.03); 
+        }
+        #sidebar h3 { font-size: 11px; text-transform: uppercase; letter-spacing: 1.2px; color: #999; margin-bottom: 20px; border-bottom: 1px solid #f0f0f0; padding-bottom: 10px; }
+        .group-item { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; font-size: 13px; cursor: pointer; color: #333; transition: opacity 0.2s; }
+        .group-item:hover { opacity: 0.7; }
+        .color-swatch { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; border: 1px solid rgba(0,0,0,0.1); }
+
+        /* Main Viewport */
+        #main { flex-grow: 1; display: flex; flex-direction: column; position: relative; }
+        #header { padding: 12px 25px; background: white; border-bottom: 1px solid #eee; display: flex; align-items: center; gap: 20px; }
+        #cy { flex-grow: 1; width: 100%; z-index: 1; }
+        
+        input[type="text"] { width: 350px; padding: 10px 18px; border-radius: 20px; border: 1px solid #ddd; outline: none; font-size: 14px; transition: border-color 0.2s; }
+        input[type="text"]:focus { border-color: #2196F3; }
+
+        .hidden-node { display: none !important; }
+        
+        #footer-info { margin-top: auto; padding-top: 20px; border-top: 1px solid #eee; font-size: 11px; color: #888; line-height: 1.5; }
+    </style>
+</head>
+<body>
+
+<div id="sidebar">
+    <h3>Equation Domains</h3>
+    <div id="group-filters"></div>
+    
+    <div id="footer-info">
+        <label class="group-item" style="font-weight: 600;">
+            <input type="checkbox" id="grayOutBinary"> Gray Out Inactive (Bin 0)
+        </label>
+        <p><b>Controls:</b><br>
+        • Click to highlight calculation path.<br>
+        • Double-click to open Coastal Wiki.<br>
+        • Space-optimized cloud clustering.</p>
+    </div>
+</div>
+
+<div id="main">
+    <div id="header">
+        <input type="text" id="search" placeholder="Search variables, equations, or codes...">
+    </div>
+    <div id="cy"></div>
+</div>
+
+<script>
+const palette = ['#4E79A7','#F28E2B','#E15759','#76B7B2','#59A14F','#EDC948','#B07AA1','#FF9DA7','#9C755F','#BAB0AC'];
+
+document.addEventListener('DOMContentLoaded', () => {
+    fetch('data.csv').then(r => r.text()).then(csv => {
+        const parsed = Papa.parse(csv, {header: true, skipEmptyLines: true});
+        initGraph(parsed.data);
+    });
+
+    function initGraph(data) {
+        const elements = [];
+        const groups = {};
+        const eqIds = new Set(data.map(d => d.Equation ? d.Equation.trim() : ""));
+        let colorIdx = 0;
+
+        // 1. Map Groups to Colors
+        data.forEach(row => {
+            if (row.Group) {
+                row.Group.split(';').map(g => g.trim()).forEach(gn => {
+                    if (gn && !groups[gn]) groups[gn] = palette[colorIdx++ % palette.length];
+                });
+            }
+        });
+
+        // 2. Build Equation Nodes
+        data.forEach(row => {
+            if(!row.Equation) return;
+            const id = row.Equation.trim();
+            const primaryGroup = row.Group ? row.Group.split(';')[0].trim() : '';
+            const label = id + (row.SourceConstants ? "\n" + row.SourceConstants : "");
+            
+            elements.push({ 
+                data: { 
+                    id, label, 
+                    bin: parseInt(row.BinaryIndex) || 0, 
+                    groups: row.Group ? row.Group.split(';').map(g => g.trim()) : [], 
+                    color: groups[primaryGroup] || '#ccc', 
+                    isVar: false,
+                    ref: row.Reference 
+                } 
+            });
+        });
+
+        // 3. Build Implicit Constant Nodes (Variables not defined as Equations)
+        const vars = new Set();
+        data.forEach(row => {
+            if (row.Variables) {
+                row.Variables.split(';').forEach(v => {
+                    const vn = v.trim();
+                    if (vn && !eqIds.has(vn)) vars.add(vn);
+                });
+            }
+        });
+        vars.forEach(v => {
+            elements.push({ 
+                data: { id: v, label: v, isVar: true, bin: 1, groups: [], color: '#999', ref: '' } 
+            });
+        });
+
+        // 4. Build Edges
+        data.forEach(row => {
+            if (row.Variables) {
+                row.Variables.split(';').forEach(v => {
+                    const vn = v.trim();
+                    if (vn) elements.push({ data: { source: vn, target: row.Equation.trim() } });
+                });
+            }
+        });
+
+        const cy = window.cy = cytoscape({
+            container: document.getElementById('cy'),
+            elements: elements,
+            style: [
+                {
+                    selector: 'node',
+                    style: {
+                        'label': 'data(label)',
+                        'background-color': '#fff',
+                        'shape': 'round-rectangle',
+                        'width': '160px',
+                        'height': 'auto',
+                        'padding': '12px',
+                        'text-valign': 'center',
+                        'text-wrap': 'wrap',
+                        'text-max-width': '140px',
+                        'font-size': '11px',
+                        'font-weight': 'bold',
+                        'border-width': '3px',
+                        'border-color': 'data(color)',
+                        'line-height': 1.1,
+                        'z-index': 10
+                    }
+                },
+                { selector: 'node[?isVar]', style: { 'shape': 'ellipse', 'width': '100px', 'border-style': 'dashed', 'font-weight': 'normal' } },
+                { 
+                    selector: 'edge', 
+                    style: { 
+                        'width': 2, 
+                        'line-color': '#bbb', 
+                        'target-arrow-shape': 'triangle', 
+                        'target-arrow-color': '#bbb', 
+                        'curve-style': 'bezier', 
+                        'opacity': 0.7,
+                        'z-index': 1
+                    } 
+                },
+                /* Highlight & Path States */
+                { selector: '.selected', style: { 'border-width': '6px', 'border-color': '#2196F3', 'z-index': 1000 } },
+                { selector: '.path-node', style: { 'border-color': '#2196F3', 'z-index': 999 } },
+                { selector: '.highlight-edge', style: { 'line-color': '#2196F3', 'target-arrow-color': '#2196F3', 'width': 4, 'opacity': 1, 'z-index': 999 } },
+                { selector: '.binary-grayed', style: { 'background-color': '#f0f0f0', 'border-color': '#ddd', 'color': '#ccc', 'opacity': 0.5 } },
+                { selector: '.faded', style: { 'opacity': 0.15 } },
+                { selector: 'node.faded', style: { 'opacity': 1.0 } },
+                { selector: '.hidden-node', style: { 'display': 'none' } }
+            ]
+        });
+
+        // Optimization Layout (No forced direction)
+        function runLayout() {
+            cy.layout({
+                name: 'fcose',
+                quality: 'proof',
+                animate: true,
+                fit: true,
+                padding: 50,
+                nodeRepulsion: 12000, 
+                idealEdgeLength: 100,
+                gravity: 0.3,
+                nodeSeparation: 130, 
+                numIter: 5000,
+                tile: true,
+                packComponents: true
+            }).run();
+        }
+
+        // Sidebar generation
+        const filterBox = document.getElementById('group-filters');
+        Object.keys(groups).sort().forEach(g => {
+            const l = document.createElement('label');
+            l.className = 'group-item';
+            l.innerHTML = `<input type="checkbox" class="tg" value="${g}"><div class="color-swatch" style="background:${groups[g]}"></div>${g}`;
+            filterBox.appendChild(l);
+        });
+
+        // Core Update Logic (Binary Fix & Garbage Collection)
+        function update() {
+            const active = Array.from(document.querySelectorAll('.tg:checked')).map(e => e.value);
+            const shouldGray = document.getElementById('grayOutBinary').checked;
+
+            // 1. Filter Equations
+            cy.nodes().not('[?isVar]').forEach(n => {
+                const show = n.data('groups').some(g => active.includes(g.trim()));
+                
+                if (show) {
+                    n.removeClass('hidden-node');
+                    // Fix: Apply binary gray-out logic while visible
+                    if (shouldGray && n.data('bin') === 0) {
+                        n.addClass('binary-grayed');
+                    } else {
+                        n.removeClass('binary-grayed');
+                    }
+                } else {
+                    n.addClass('hidden-node');
+                    n.removeClass('binary-grayed');
+                }
+            });
+
+            // 2. Filter Variables (Input trimming)
+            cy.nodes('[?isVar]').forEach(v => {
+                const hasVisibleTarget = v.outgoers().nodes().some(eq => !eq.hasClass('hidden-node'));
+                v.toggleClass('hidden-node', !hasVisibleTarget);
+            });
+
+            runLayout();
+        }
+
+        // Listeners
+        document.querySelectorAll('.tg, #grayOutBinary').forEach(el => el.addEventListener('change', update));
+        
+        // Tap: Highlight Path & Manage Z-Index
+        cy.on('tap', 'node', e => {
+            cy.elements().removeClass('selected highlight-edge faded path-node');
+            const n = e.target;
+            const upstream = n.predecessors();
+            
+            cy.elements().addClass('faded');
+            n.addClass('selected').removeClass('faded');
+            upstream.nodes().addClass('path-node').removeClass('faded');
+            upstream.edges().addClass('highlight-edge').removeClass('faded');
+        });
+
+        // Double Click: Hyperlink
+        cy.on('dbltap', 'node', e => {
+            const url = e.target.data('ref');
+            if (url && url.startsWith('http')) window.open(url, '_blank');
+        });
+
+        // Search
+        document.getElementById('search').addEventListener('input', e => {
+            const val = e.target.value.toLowerCase();
+            cy.nodes().removeClass('selected');
+            if(val) {
+                cy.nodes().filter(n => n.data('label').toLowerCase().includes(val)).addClass('selected');
+            }
+        });
+
+        cy.on('tap', e => { if(e.target === cy) cy.elements().removeClass('selected highlight-edge faded path-node'); });
+
+        // Start Clean
+        cy.nodes().addClass('hidden-node');
+        runLayout();
+    }
+});
+</script>
+</body>
+</html>
