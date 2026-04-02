@@ -259,7 +259,6 @@ document.addEventListener('DOMContentLoaded', () => {
             
             cy.on('pan zoom', () => { popup.style.display = 'none'; });
             
-        });
 
         // Optimization Layout (No forced direction)
         function runLayout() {
@@ -294,6 +293,7 @@ document.addEventListener('DOMContentLoaded', () => {
             l.innerHTML = `<input type="checkbox" class="tg" value="${g}"><div class="color-swatch" style="background:${groups[g]}"></div>${g}`;
             filterBox.appendChild(l);
         });
+       // }); //initGraph
 
         // Core Update Logic (Binary Fix & Garbage Collection)
         
