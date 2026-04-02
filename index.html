@@ -228,10 +228,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     popup.innerHTML = content;
                     popup.style.display = 'block';
                     
-                    // Position at top-right of node
+                    // Position lower-left of popup at upper-right of node
                     const pos = node.renderedPosition();
-                    popup.style.left = (pos.x + 80) + 'px';
-                    popup.style.top = (pos.y - 40) + 'px';
+                    const popupHeight = popup.offsetHeight;
+                    
+                    popup.style.left = (pos.x + 80) + 'px'; // Move right past the node half-width (160/2)
+                    popup.style.top = (pos.y - 40 - popupHeight) + 'px'; // Move up past node half-height plus popup height
                 }, 500); // 2-second delay
             });
             
