@@ -308,22 +308,28 @@ document.addEventListener('DOMContentLoaded', () => {
         
             // 1. Filter Equations
             cy.nodes().not('[?isVar]').forEach(n => {
-                const show = n.data('groups').some(g => active.includes(g.trim()));
-                            
+           // Inside the cy.nodes().not('[?isVar]').forEach loop:
+            const show = n.data('groups').some(g => active.includes(g.trim()));
+            
             if (show) {
                 n.removeClass('hidden-node');
                 
-                // Check for multiple formulas (variants)
                 const hasMultiple = (n.data('variants') || []).length > 1;
-            
+                const shouldGray = document.getElementById('grayOutBinary').checked;
+
                 if (shouldGray && n.data('bin') === 0) {
                     n.addClass('binary-grayed');
-                    n.style('background-color', '#f0f0f0'); // Reset to gray if binary-grayed
+                    n.style('background-color', '#f0f0f0'); // Force Gray
                 } else {
                     n.removeClass('binary-grayed');
-                    // If not grayed out, turn yellow only if multiple formulas exist
-                    n.style('background-color', hasMultiple ? '#ccffcc' : '#fff'); 
+                    // This line is the fix: it forces white if NOT multiple
+                    n.style('background-color', hasMultiple ? '#e8f5e9' : '#fff'); 
                 }
+            } else {
+                n.addClass('hidden-node');
+                // Clean up styles while hidden so they don't "pop" back green later
+                n.style('background-color', '#fff'); 
+            }
             }
             });
         
@@ -374,7 +380,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Start Clean
         cy.nodes().addClass('hidden-node');
-        runLayout();
+        //runLayout();
         update();
     }
 });
