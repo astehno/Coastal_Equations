@@ -123,7 +123,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     variants: [] // Store all versions here
                 });
             }
-            
+            const nodeData = equationMap.get(id);
             const node = equationMap.get(id);
             // ONLY add the variant if the formula is unique for this node
             const isNewFormula = !node.variants.some(v => v.formula === row.Formula);
