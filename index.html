@@ -7,6 +7,7 @@
     <script src="https://cdn.jsdelivr.net/npm/layout-base@2.0.1/layout-base.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/cose-base@2.2.0/cose-base.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/cytoscape-fcose@2.2.0/cytoscape-fcose.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <style>
         body { font-family: 'Inter', 'Segoe UI', sans-serif; margin: 0; display: flex; height: 100vh; background: #fafafa; overflow: hidden; }
         
@@ -38,13 +39,16 @@
             display: none;
             background: #f4f4f4;
             border: 1px solid #333;
-            padding: 10px;
+            padding: 15px;
             border-radius: 4px;
             z-index: 9999;
             box-shadow: 3px 3px 10px rgba(0,0,0,0.2);
             pointer-events: none; /* Allows hovering "through" it */
             font-size: 12px;
-            max-width: 300px;
+            max-width: none;
+            min-width: 200px;
+            white-space: nowrap
+            
         }
         .popup-line { margin-bottom: 5px; }
         .bold-variant { font-weight: bold; }
@@ -229,7 +233,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     });
             
                     popup.innerHTML = content;
-                    popup.style.display = 'block';
+                   // popup.style.display = 'block';
+
+                    MathJax.typesetPromise([popup]).then(() => {
+                        popup.style.display = 'block';
                     
                     // Position lower-left of popup at upper-right of node
                    // 1. Get the bounding box of the graph container to account for sidebar offset
@@ -253,6 +260,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     
                     // Set Top: Absolute Node Top minus popup height and a 10px buffer
                     popup.style.top = (absoluteY - popup.offsetHeight - 10) + 'px';
+                    });
                 }, 500); // 2-second delay
             });
             
