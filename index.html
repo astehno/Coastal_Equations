@@ -299,8 +299,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
        // }); //initGraph
 
-        // Core Update Logic (Binary Fix & Garbage Collection)
-        
         // Core Update Logic (Replaces the old update function)
         function update(isGrayOutToggle = false) {
             const active = Array.from(document.querySelectorAll('.tg:checked')).map(e => e.value);
@@ -329,7 +327,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 n.addClass('hidden-node');
                 // Clean up styles while hidden so they don't "pop" back green later
                 n.style('background-color', '#fff'); 
-            }
+            //}
             }
             });
         
@@ -380,8 +378,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Start Clean
         cy.nodes().addClass('hidden-node');
-        //runLayout();
-        update();
+        document.querySelectorAll('.tg').forEach(cb => cb.checked = false);
+        runLayout();
+        //update();
     }
 });
 </script>
