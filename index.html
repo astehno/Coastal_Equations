@@ -229,13 +229,18 @@ document.addEventListener('DOMContentLoaded', () => {
                     let content = '';
                     variants.forEach(v => {
                         const styleClass = v.isBold ? 'bold-variant' : '';
-                        content += `<div class="popup-line ${styleClass}">${v.version}: ${v.formula}</div>`;
+                       content += `
+                        <div class="popup-line ${styleClass}">
+                            <span class="version-label">${v.version}:</span>
+                            <span class="math-content">\\(${v.formula}\\)</span>
+                        </div>`;
                     });
             
                     popup.innerHTML = content;
                    // popup.style.display = 'block';
 
                     MathJax.typesetPromise([popup]).then(() => {
+                        if (content === "") return;
                         popup.style.display = 'block';
                     
                     // Position lower-left of popup at upper-right of node
