@@ -123,11 +123,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
             }
             
-            // Push the specific version data for the popup
-            equationMap.get(id).variants.push({
-                version: row.Version_Name || 'Standard',
-                formula: row.Formula || '',
-                isBold: parseInt(row.BinaryIndex) === 1
+            const node = equationMap.get(id);
+            // ONLY add the variant if the formula is unique for this node
+            const isNewFormula = !node.variants.some(v => v.formula === row.Formula);
+            
+            if (isNewFormula) {
+                node.variants.push({
+                    version: row.Version_Name || 'Standard',
+                    formula: row.Formula || '',
+                    isBold: parseInt(row.BinaryIndex) === 1
+                });
             });
         });
         
@@ -377,10 +382,12 @@ document.addEventListener('DOMContentLoaded', () => {
         cy.on('tap', e => { if(e.target === cy) cy.elements().removeClass('selected highlight-edge faded path-node'); });
 
         // Start Clean
-        cy.nodes().addClass('hidden-node');
+        //cy.nodes().addClass('hidden-node');
+        //document.querySelectorAll('.tg').forEach(cb => cb.checked = false);
+        //runLayout();
         document.querySelectorAll('.tg').forEach(cb => cb.checked = false);
-        runLayout();
-        //update();
+        document.getElementById('grayOutBinary').checked = false;
+        update();
     }
 });
 </script>
