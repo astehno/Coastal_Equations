@@ -110,8 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if(!row.Equation) return;
             const id = row.Equation.trim();
             const primaryGroup = row.Group ? row.Group.split(';')[0].trim() : '';
-            const formulaText = (row.Formula || '').trim();            
-           
+            
             if (!equationMap.has(id)) {
                 equationMap.set(id, {
                     id,
@@ -123,19 +122,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     variants: [] // Store all versions here
                 });
             }
-            const nodeData = equationMap.get(id);
-            const node = equationMap.get(id);
-            // ONLY add the variant if the formula is unique for this node
-            const isNewFormula = !node.variants.some(v => v.formula === row.Formula);
-            const isDuplicate = nodeData.variants.some(v => v.formula.trim() === formulaText);
             
-            if (!isDuplicate && formulaText !== "") {
-                nodeData.variants.push({
-                    version: row.Version_Name || 'Standard',
-                    formula: formulaText,
-                    isBold: parseInt(row.BinaryIndex) === 1
-                });
-            }
+            // Push the specific version data for the popup
+            equationMap.get(id).variants.push({
+                version: row.Version_Name || 'Standard',
+                formula: row.Formula || '',
+                isBold: parseInt(row.BinaryIndex) === 1
+            });
         });
         
         equationMap.forEach(nodeData => {
@@ -306,6 +299,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
        // }); //initGraph
 
+        // Core Update Logic (Binary Fix & Garbage Collection)
+        
         // Core Update Logic (Replaces the old update function)
         function update(isGrayOutToggle = false) {
             const active = Array.from(document.querySelectorAll('.tg:checked')).map(e => e.value);
@@ -313,29 +308,20 @@ document.addEventListener('DOMContentLoaded', () => {
         
             // 1. Filter Equations
             cy.nodes().not('[?isVar]').forEach(n => {
-           // Inside the cy.nodes().not('[?isVar]').forEach loop:
-            const show = n.data('groups').some(g => active.includes(g.trim()));
-            
-            if (show) {
-                n.removeClass('hidden-node');
+                const show = n.data('groups').some(g => active.includes(g.trim()));
                 
-                const hasMultiple = (n.data('variants') || []).length > 1;
-                const shouldGray = document.getElementById('grayOutBinary').checked;
-
-                if (shouldGray && n.data('bin') === 0) {
-                    n.addClass('binary-grayed');
-                    n.style('background-color', '#f0f0f0'); // Force Gray
+                if (show) {
+                    n.removeClass('hidden-node');
+                    // Apply binary gray-out logic while visible
+                    if (shouldGray && n.data('bin') === 0) {
+                        n.addClass('binary-grayed');
+                    } else {
+                        n.removeClass('binary-grayed');
+                    }
                 } else {
+                    n.addClass('hidden-node');
                     n.removeClass('binary-grayed');
-                    // This line is the fix: it forces white if NOT multiple
-                    n.style('background-color', hasMultiple ? '#e8f5e9' : '#fff'); 
                 }
-            } else {
-                n.addClass('hidden-node');
-                // Clean up styles while hidden so they don't "pop" back green later
-                n.style('background-color', '#fff'); 
-            //}
-            }
             });
         
             // 2. Filter Variables
@@ -383,18 +369,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         cy.on('tap', e => { if(e.target === cy) cy.elements().removeClass('selected highlight-edge faded path-node'); });
 
-// Start Clean
-        // Uncheck everything to ensure a blank slate
-        document.querySelectorAll('.tg').forEach(cb => cb.checked = false);
-        document.getElementById('grayOutBinary').checked = false;
-
-        // Hide all nodes by default
+        // Start Clean
         cy.nodes().addClass('hidden-node');
-        
-        // Reset all backgrounds to white initially
-        cy.nodes().style('background-color', '#fff');
-
-        // Run layout once for the hidden nodes
         runLayout();
     }
 });
