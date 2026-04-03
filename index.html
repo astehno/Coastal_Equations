@@ -127,6 +127,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const node = equationMap.get(id);
             // ONLY add the variant if the formula is unique for this node
             const isNewFormula = !node.variants.some(v => v.formula === row.Formula);
+            const isDuplicate = nodeData.variants.some(v => v.formula.trim() === formulaText);
             
             if (!isDuplicate && formulaText !== "") {
                 nodeData.variants.push({
