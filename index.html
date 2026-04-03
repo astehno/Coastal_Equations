@@ -373,8 +373,8 @@ document.addEventListener('DOMContentLoaded', () => {
         cy.on('tap', e => { if(e.target === cy) cy.elements().removeClass('selected highlight-edge faded path-node'); });
 
         // Start Clean
-       // cy.nodes().addClass('hidden-node');
-       // runLayout();
+        cy.nodes().addClass('hidden-node');
+        runLayout();
         update();
     }
 });
